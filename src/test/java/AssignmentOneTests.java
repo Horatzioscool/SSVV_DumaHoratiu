@@ -46,20 +46,20 @@ public class AssignmentOneTests {
     @Test
     public void Test_AddStudent_NewStudent_ShouldReturnSameStudent(){
         var student = new Student("1", "John Joseph", 922, "joseph@hotmail.com");
-        service.addStudent(student);
+        var result = service.addStudent(student);
+        assert result != null;
     }
 
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     @Test
     public void Test_AddAssignment_NewAssignment_ShouldReturnSameAssignment() throws ParseException {
-
-
         var tema = new Tema("1", "Assignment 1",
                 (int) simpleDateFormat.parse("20-03-2022").getTime(),
                 (int) simpleDateFormat.parse("27-03-2022").getTime());
 
-        service.addTema(tema);
+        var result = service.addTema(tema);
+        assert result != null;
     }
 
     @Test
