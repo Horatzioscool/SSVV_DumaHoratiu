@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 @ExtendWith(MockitoExtension.class)
-public class AssignmentOneTests {
+public class AssignmentOneTest {
 
     @Mock
     private CrudRepository<String, Student> studentCrudRepository;
@@ -46,7 +46,7 @@ public class AssignmentOneTests {
     }
 
     @Test
-    public void Test_AddStudent_NewStudent_ShouldReturnSameStudent(){
+    public void Test_AddStudent_NewStudent_ShouldReturnSameStudent() {
         var student = new Student("1", "John Joseph", 922, "joseph@hotmail.com");
         var result = service.addStudent(student);
         assert result != null;
