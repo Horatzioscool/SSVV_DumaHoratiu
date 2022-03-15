@@ -1,3 +1,5 @@
+package Tests;
+
 import domain.Nota;
 import domain.Student;
 import domain.Tema;

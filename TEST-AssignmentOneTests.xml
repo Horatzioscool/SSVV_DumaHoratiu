@@ -1,4 +1,0 @@
-<testsuite tests="2">
-    <testcase classname="AssignmentOneTests" name="Test_AddStudent_NewStudent_ShouldReturnSameStudent"/>
-    <testcase classname="AssignmentOneTests" name="Test_AddAssignment_NewAssignment_ShouldReturnSameAssignment"/>
-</testsuite>
