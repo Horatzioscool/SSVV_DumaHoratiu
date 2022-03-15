@@ -52,7 +52,7 @@ public class AssignmentOneTests {
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     @Test
-    public void AddLaboratoryAssignment() throws ParseException {
+    public void Test_AddAssignment_NewAssignment_ShouldReturnSameAssignment() throws ParseException {
 
 
         var tema = new Tema("1", "Assignment 1",
