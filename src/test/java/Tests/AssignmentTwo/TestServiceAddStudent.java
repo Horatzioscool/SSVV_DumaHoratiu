@@ -19,7 +19,7 @@ import validation.Validator;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ServiceAddStudentTests {
+public class TestServiceAddStudent {
 
     @Mock
     private CrudRepository<String, Student> studentCrudRepository;

@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
-public class AssignmentOneTest {
+public class TestAssignmentOne {
 
     @Mock
     private CrudRepository<String, Student> studentCrudRepository;

@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RepositoryAddStudentTests {
+public class TestRepositoryAddStudent {
 
     private final CrudRepository<String, Student> repository = new StudentRepository();
 
