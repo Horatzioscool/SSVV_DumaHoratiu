@@ -27,7 +27,7 @@ public abstract class AbstractCrudRepository <ID, E extends HasID<ID>> implement
             this.entities.put(entity.getID(), entity);
             return null;
         }
-        else throw new RepositoryException("Entity with id %s already in repository".formatted(entity.getID()));
+        else throw new RepositoryException(String.format("Entity with id %s already in repository", entity.getID()));
     }
 
     @Override
