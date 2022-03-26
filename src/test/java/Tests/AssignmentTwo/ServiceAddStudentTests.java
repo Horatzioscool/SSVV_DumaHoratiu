@@ -45,7 +45,7 @@ public class ServiceAddStudentTests {
     }
 
     @Test
-    public void Test_AddStudent_ShouldNotThrow() {
+    public void TestAddStudent_ShouldNotThrow() {
         var student = new Student("1", "John Joseph", 922, "joseph@hotmail.com");
 
         Mockito.when(studentCrudRepository.save(student))
