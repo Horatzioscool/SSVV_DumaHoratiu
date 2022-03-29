@@ -1,11 +1,12 @@
-package repository;
+package repository.xml;
 
 import domain.Nota;
 import java.time.LocalDate;
-import domain.Nota;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import repository.xml.AbstractXMLRepository;
 
 public class NotaXMLRepo extends AbstractXMLRepository<String, Nota> {
 

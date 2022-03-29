@@ -2,7 +2,7 @@ package view;
 
 import domain.Nota;
 import domain.Student;
-import domain.Tema;
+import domain.LabTopic;
 import service.Service;
 import validation.ValidationException;
 import java.time.LocalDate;
@@ -228,7 +228,7 @@ public class UI {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Introduceti nr tema: ");
         String nrTema = scanner.next();
-        if (service.findTema(nrTema) != null) {
+        if (service.findLabTopic(nrTema) != null) {
             throw new ValidationException("Tema exista deja!");
         }
         System.out.print("Introduceti descrierea: ");
@@ -238,12 +238,12 @@ public class UI {
         int deadline = scanner.nextInt();
         System.out.print("Introduceti saptamana primirii: ");
         int primire = scanner.nextInt();
-        Tema tema = new Tema(nrTema, descriere, deadline, primire);
-        tema = service.addTema(tema);
-        if (tema == null) {
+        LabTopic labTopic = new LabTopic(nrTema, descriere, deadline, primire);
+        labTopic = service.addLabTopic(labTopic);
+        if (labTopic == null) {
             System.out.println("Tema adaugata cu succes!");
         } else {
-            System.out.println("Tema deja exista" + tema);
+            System.out.println("Tema deja exista" + labTopic);
         }
     }
 
@@ -268,8 +268,8 @@ public class UI {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Introduceti id-ul temei: pe care doriti sa o stergeti: ");
         String id = scanner.next();
-        Tema tema = service.deleteTema(id);
-        if (tema == null) {
+        LabTopic labTopic = service.deleteLabTopic(id);
+        if (labTopic == null) {
             System.out.println("Tema nu exista!");
         } else {
             System.out.println("Tema stearsa cu succes!");
@@ -283,11 +283,11 @@ public class UI {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Introduceti id-ul temei: ");
         String id = scanner.next();
-        Tema tema = service.findTema(id);
-        if (tema == null) {
+        LabTopic labTopic = service.findLabTopic(id);
+        if (labTopic == null) {
             System.out.println("Tema nu exista!");
         } else {
-            System.out.println(tema);
+            System.out.println(labTopic);
         }
     }
 
@@ -306,12 +306,12 @@ public class UI {
         int deadline = scanner.nextInt();
         System.out.print("Introduceti saptamana primire: ");
         int primire = scanner.nextInt();
-        Tema tema = new Tema(id, descriere, deadline, primire);
-        Tema tema1 = service.updateTema(tema);
-        if (tema1 == null) {
+        LabTopic labTopic = new LabTopic(id, descriere, deadline, primire);
+        LabTopic labTopic1 = service.updateLabTopic(labTopic);
+        if (labTopic1 == null) {
             System.out.println("Tema nu exista!");
         } else {
-            System.out.println("Tema modificata cu succes!" + tema1);
+            System.out.println("Tema modificata cu succes!" + labTopic1);
         }
     }
 
@@ -319,7 +319,7 @@ public class UI {
      * Afiseaza toate temele
      */
     private void afisareTeme(){
-        Iterable<Tema> all = service.getAllTeme();
+        Iterable<LabTopic> all = service.getAllLabTopics();
         //for(Tema tema: all){
         //    System.out.println(tema);
         //}

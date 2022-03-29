@@ -1,9 +1,10 @@
-package repository;
+package repository.xml;
 
 import domain.Student;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import repository.xml.AbstractXMLRepository;
 
 public class StudentXMLRepo extends AbstractXMLRepository<String, Student> {
     /**

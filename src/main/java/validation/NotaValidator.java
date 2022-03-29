@@ -3,8 +3,9 @@ package validation;
 
 import domain.Nota;
 import domain.Student;
-import domain.Tema;
-import repository.*;
+import domain.LabTopic;
+import repository.xml.StudentXMLRepo;
+import repository.xml.TemaXMLRepo;
 
 public class NotaValidator implements Validator<Nota> {
     private StudentXMLRepo studentFileRepository;
@@ -31,8 +32,8 @@ public class NotaValidator implements Validator<Nota> {
         if (student== null){
             throw new ValidationException("Studentul nu exista!");
         }
-        Tema tema = temaFileRepository.findOne(nota.getIdTema());
-        if(tema == null){
+        LabTopic labTopic = temaFileRepository.findOne(nota.getIdTema());
+        if(labTopic == null){
             throw new ValidationException("Tema nu exista!");
         }
         double notaC = nota.getNota();

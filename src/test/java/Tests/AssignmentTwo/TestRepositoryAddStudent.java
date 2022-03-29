@@ -4,7 +4,7 @@ import domain.Student;
 import org.junit.jupiter.api.Test;
 import repository.CrudRepository;
 import repository.RepositoryException;
-import repository.StudentRepository;
+import repository.memory.StudentRepository;
 
 import java.util.stream.Stream;
 

@@ -3,7 +3,7 @@ package service;
 import curent.Curent;
 import domain.Nota;
 import domain.Student;
-import domain.Tema;
+import domain.LabTopic;
 import repository.CrudRepository;
 import validation.*;
 
@@ -20,8 +20,8 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class Service {
     private CrudRepository<String, Student> studentFileRepository;
     private Validator<Student> studentValidator;
-    private CrudRepository<String, Tema> temaFileRepository;
-    private Validator<Tema> temaValidator;
+    private CrudRepository<String, LabTopic> labTopicRepository;
+    private Validator<LabTopic> labTopic;
     private CrudRepository<String, Nota> notaFileRepository;
     private Validator<Nota> notaValidator;
 
@@ -29,16 +29,16 @@ public class Service {
      * Class Constructor
      * @param studentFileRepository - repository student
      * @param studentValidator - validator student
-     * @param temaFileRepository - repository tema
-     * @param temaValidator - validator tema
+     * @param labTopicRepository - repository tema
+     * @param labTopic - validator tema
      * @param notaFileRepository - repository nota
      * @param notaValidator - validator nota
      */
-    public Service(CrudRepository<String, Student> studentFileRepository, Validator<Student> studentValidator, CrudRepository<String, Tema> temaFileRepository, Validator<Tema> temaValidator, CrudRepository<String, Nota> notaFileRepository, Validator<Nota> notaValidator) {
+    public Service(CrudRepository<String, Student> studentFileRepository, Validator<Student> studentValidator, CrudRepository<String, LabTopic> labTopicRepository, Validator<LabTopic> labTopic, CrudRepository<String, Nota> notaFileRepository, Validator<Nota> notaValidator) {
         this.studentFileRepository = studentFileRepository;
         this.studentValidator = studentValidator;
-        this.temaFileRepository = temaFileRepository;
-        this.temaValidator = temaValidator;
+        this.labTopicRepository = labTopicRepository;
+        this.labTopic = labTopic;
         this.notaFileRepository = notaFileRepository;
         this.notaValidator = notaValidator;
     }
@@ -96,52 +96,34 @@ public class Service {
 
     /**
      * Adauga o tema noua
-     * @param tema  - tema pe care o adauga
+     * @param labTopic  - tema pe care o adauga
      * @return null daca s-a facut adaugarea sau tema daca aceasta exista deja
      */
-    public Tema addTema(Tema tema){
-        temaValidator.validate(tema);
-        return temaFileRepository.save(tema);
+    public LabTopic addLabTopic(LabTopic labTopic){
+        this.labTopic.validate(labTopic);
+        return labTopicRepository.save(labTopic);
     }
 
-    /**
-     * Sterge o tema
-     * @param nrTema - nr-ul temei
-     * @return tema daca aceasta a fost stearsa sau null daca tema nu exista
-     */
-    public Tema deleteTema(String nrTema){
-        if(nrTema == null || nrTema.equals("")) {
+    public LabTopic deleteLabTopic(String id){
+        if(id == null || id.equals("")) {
             throw new ValidationException("Id-ul nu poate fi null!");
         }
-        return temaFileRepository.delete(nrTema);
+        return labTopicRepository.delete(id);
     }
 
-    /**
-     * Cauta o tema
-     * @param id - id-ul temei
-     * @return tema sau null daca aceasta nu exista
-     */
-    public Tema findTema(String id){
+    public LabTopic findLabTopic(String id){
         if(id == null || id.equals("")){
             throw new ValidationException("Id-ul nu poate fi null!");
-        }return temaFileRepository.findOne(id);
+        }return labTopicRepository.findOne(id);
     }
 
-    /**
-     * Modifica o tema
-     * @param tema - noua tema
-     * @return tema daca s-a facut modificarea sau null daca acesta nu exisra
-     */
-    public Tema updateTema(Tema tema){
-        temaValidator.validate(tema);
-        return temaFileRepository.update(tema);
+    public LabTopic updateLabTopic(LabTopic labTopic){
+        this.labTopic.validate(labTopic);
+        return labTopicRepository.update(labTopic);
     }
 
-    /**
-     * @return toate temele din memorie
-     */
-    public Iterable<Tema> getAllTeme(){
-        return temaFileRepository.findAll();
+    public Iterable<LabTopic> getAllLabTopics(){
+        return labTopicRepository.findAll();
     }
 
     /**
@@ -153,10 +135,10 @@ public class Service {
     public double addNota(Nota nota, String feedback){
         notaValidator.validate(nota);
         Student student = studentFileRepository.findOne(nota.getIdStudent());
-        Tema tema = temaFileRepository.findOne(nota.getIdTema());
+        LabTopic labTopic = labTopicRepository.findOne(nota.getIdTema());
         int predare = calculeazaSPredare(nota.getData());
-        if(predare != tema.getDeadline()){
-            if (predare-tema.getDeadline() == 1){
+        if(predare != labTopic.getDeadline()){
+            if (predare- labTopic.getDeadline() == 1){
                 nota.setNota(nota.getNota()-2.5);
             }
             else{
@@ -166,10 +148,10 @@ public class Service {
         notaFileRepository.save(nota);
         String filename = "fisiere/" + student.getNume() + ".txt";
         try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filename, true))){
-            bufferedWriter.write("\nTema: " + tema.getID());
+            bufferedWriter.write("\nTema: " + labTopic.getID());
             bufferedWriter.write("\nNota: " + nota.getNota());
             bufferedWriter.write("\nPredata in saptamana: " + predare);
-            bufferedWriter.write("\nDeadline: " + tema.getDeadline());
+            bufferedWriter.write("\nDeadline: " + labTopic.getDeadline());
             bufferedWriter.write("\nFeedback: " +feedback);
             bufferedWriter.newLine();
         } catch (IOException exception){
@@ -216,13 +198,13 @@ public class Service {
      */
     public void prelungireDeadline(String nrTema, int deadline){
         int diff= Curent.getCurrentWeek();
-        Tema tema = temaFileRepository.findOne(nrTema);
-        if(tema == null){
+        LabTopic labTopic = labTopicRepository.findOne(nrTema);
+        if(labTopic == null){
             throw new ValidationException("Tema inexistenta!");
         }
-        if(tema.getDeadline() >= diff) {
-            tema.setDeadline(deadline);
-            temaFileRepository.save(tema);
+        if(labTopic.getDeadline() >= diff) {
+            labTopic.setDeadline(deadline);
+            labTopicRepository.save(labTopic);
         }
         else{
             throw new ValidationException("Nu se mai poate prelungi deadline-ul!");

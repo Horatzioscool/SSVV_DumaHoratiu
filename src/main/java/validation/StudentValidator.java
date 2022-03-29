@@ -30,7 +30,7 @@ public class StudentValidator implements Validator<Student> {
         if(entity.getEmail().equals("")){
             throw new ValidationException("Email incorect!");
         }
-        if(entity.getGrupa() < 0) {
+        if(entity.getGrupa() <= 0) {
             throw new ValidationException("Grupa incorecta!");
         }
         emailValidator.validate(entity.getEmail());

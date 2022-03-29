@@ -1,4 +1,8 @@
-package repository;
+package repository.memory;
+
+import repository.CrudRepository;
+import repository.HasID;
+import repository.RepositoryException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +10,7 @@ import java.util.Map;
 public abstract class AbstractCrudRepository <ID, E extends HasID<ID>> implements CrudRepository<ID, E> {
     private final Map<ID, E> entities;
 
-    AbstractCrudRepository(){
+    protected AbstractCrudRepository(){
         this.entities = new HashMap<>();
     }
 

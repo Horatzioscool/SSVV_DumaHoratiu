@@ -2,7 +2,7 @@ package Tests;
 
 import domain.Nota;
 import domain.Student;
-import domain.Tema;
+import domain.LabTopic;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,9 +30,9 @@ public class TestAssignmentOne {
     @Mock
     private Validator<Student> studentValidator;
     @Mock
-    private CrudRepository<String, Tema> temaCrudRepository;
+    private CrudRepository<String, LabTopic> temaCrudRepository;
     @Mock
-    private Validator<Tema> temaValidator;
+    private Validator<LabTopic> temaValidator;
     @Mock
     private CrudRepository<String, Nota> notaCrudRepository;
     @Mock
@@ -60,11 +60,11 @@ public class TestAssignmentOne {
 
     @Test
     public void TestAddAssignment_NewAssignment_ShouldReturnSameAssignment() throws ParseException {
-        var tema = new Tema("1", "Assignment 1",
+        var tema = new LabTopic("1", "Assignment 1",
                 (int) simpleDateFormat.parse("20-03-2022").getTime(),
                 (int) simpleDateFormat.parse("27-03-2022").getTime());
 
-        var result = service.addTema(tema);
+        var result = service.addLabTopic(tema);
         assertNull(result);
     }
 
@@ -73,7 +73,7 @@ public class TestAssignmentOne {
         var nota = new Nota("1", "1", "1", 7.5, LocalDate.of(2022, 4, 30));
 
         Mockito.when(temaCrudRepository.findOne("1"))
-                .thenReturn(new Tema("1", "Assignment 1",
+                .thenReturn(new LabTopic("1", "Assignment 1",
                         (int) simpleDateFormat.parse("20-03-2022").getTime(),
                         (int) simpleDateFormat.parse("27-03-2022").getTime()));
 

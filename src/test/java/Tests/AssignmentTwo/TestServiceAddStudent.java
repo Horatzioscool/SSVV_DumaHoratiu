@@ -2,7 +2,7 @@ package Tests.AssignmentTwo;
 
 import domain.Nota;
 import domain.Student;
-import domain.Tema;
+import domain.LabTopic;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,9 +24,9 @@ public class TestServiceAddStudent {
     @Mock
     private CrudRepository<String, Student> studentCrudRepository;
     @Mock
-    private CrudRepository<String, Tema> temaCrudRepository;
+    private CrudRepository<String, LabTopic> temaCrudRepository;
     @Mock
-    private Validator<Tema> temaValidator;
+    private Validator<LabTopic> temaValidator;
     @Mock
     private CrudRepository<String, Nota> notaCrudRepository;
     @Mock
@@ -73,8 +73,24 @@ public class TestServiceAddStudent {
 
     @Test
     public void Test_AddStudent_GroupLowerThanZero_ShouldThrow() {
-        var student = new Student("1", "John Joseph", -5, "joseph@hotmail.com");
+        var student = new Student("1", "John Joseph", -1, "joseph@hotmail.com");
         assertThrows(ValidationException.class, () -> {
+            service.addStudent(student);
+        });
+    }
+
+    @Test
+    public void Test_AddStudent_GroupZero_ShouldThrow() {
+        var student = new Student("1", "John Joseph", 0, "joseph@hotmail.com");
+        assertThrows(ValidationException.class, () -> {
+            service.addStudent(student);
+        });
+    }
+
+    @Test
+    public void Test_AddStudent_GroupOne_ShouldThrowNotThrow() {
+        var student = new Student("1", "John Joseph", 1, "joseph@hotmail.com");
+        assertDoesNotThrow(() -> {
             service.addStudent(student);
         });
     }

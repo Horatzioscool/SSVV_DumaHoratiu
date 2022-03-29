@@ -1,11 +1,11 @@
-package repository;
+package repository.xml;
 
-import domain.Tema;
+import domain.LabTopic;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public class TemaXMLRepo extends AbstractXMLRepository<String, Tema> {
+public class TemaXMLRepo extends AbstractXMLRepository<String, LabTopic> {
 
     /**
      * Class constructor
@@ -21,7 +21,7 @@ public class TemaXMLRepo extends AbstractXMLRepository<String, Tema> {
      * @return tema
      */
     @Override
-    public Tema extractEntity(Element element) {
+    public LabTopic extractEntity(Element element) {
         String nrTema = element.getAttribute("nrTema");
         NodeList nods = element.getChildNodes();
         String descriere =element.getElementsByTagName("descriere")
@@ -34,7 +34,7 @@ public class TemaXMLRepo extends AbstractXMLRepository<String, Tema> {
                 .item(0)
                 .getTextContent();
 
-        return new Tema(nrTema, descriere, Integer.parseInt(deadline), Integer.parseInt(primire));
+        return new LabTopic(nrTema, descriere, Integer.parseInt(deadline), Integer.parseInt(primire));
     }
 
     /**
@@ -44,12 +44,12 @@ public class TemaXMLRepo extends AbstractXMLRepository<String, Tema> {
      * @return
      */
     @Override
-    public Element createElementfromEntity(Document document, Tema entity) {
+    public Element createElementfromEntity(Document document, LabTopic entity) {
         Element e = document.createElement("nrTema");
         e.setAttribute("nrTema", entity.getID());
 
         Element descriere = document.createElement("descriere");
-        descriere.setTextContent(entity.getDescriere());
+        descriere.setTextContent(entity.getDescription());
         e.appendChild(descriere);
 
         Element deadline = document.createElement("deadline");
@@ -58,7 +58,7 @@ public class TemaXMLRepo extends AbstractXMLRepository<String, Tema> {
         e.appendChild(deadline);
 
         Element primire = document.createElement("primire");
-        Integer p=entity.getPrimire();
+        Integer p=entity.getReceived();
         primire.setTextContent(p.toString());
         e.appendChild(primire);
 
