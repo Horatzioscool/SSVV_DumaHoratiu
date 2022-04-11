@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import repository.CrudRepository;
@@ -17,6 +16,7 @@ import validation.ValidationException;
 import validation.Validator;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class TestServiceAddLabTopic {
@@ -42,17 +42,6 @@ public class TestServiceAddLabTopic {
                 labTopicCrudRepository, labTopicValidator,
                 notaCrudRepository, notaValidator
         );
-    }
-
-    @Test
-    public void TestAddLabTopic_ShouldNotThrow() {
-        var lab = new LabTopic("1", "A funny desc", 12, 11);
-
-        Mockito.when(labTopicCrudRepository.save(lab))
-                .thenReturn(null);
-
-        var result = assertDoesNotThrow(() -> service.addLabTopic(lab));
-        assertNull(result);
     }
 
     @Test
@@ -91,8 +80,26 @@ public class TestServiceAddLabTopic {
     public void TestAddLabTopic_DeadlineZero_ShouldThrow() {
         var lab = new LabTopic("1", "A funny desc", 0, 11);
 
+        assertThrows(ValidationException.class,
+                () -> service.addLabTopic(lab));
+    }
+
+    @Test
+    public void TestAddLabTopic_ReceivedFifteen_ShouldThrow() {
+        var lab = new LabTopic("1", "A funny desc", 12, 15);
 
         assertThrows(ValidationException.class,
                 () -> service.addLabTopic(lab));
+    }
+
+    @Test
+    public void TestAddLabTopic_ShouldNotThrow() {
+        var lab = new LabTopic("1", "A funny desc", 12, 11);
+
+        when(labTopicCrudRepository.save(lab))
+                .thenReturn(null);
+
+        var result = assertDoesNotThrow(() -> service.addLabTopic(lab));
+        assertNull(result);
     }
 }
