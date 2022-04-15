@@ -1,25 +1,22 @@
 package repository.xml;
 
-import domain.Nota;
-import java.time.LocalDate;
-
+import domain.Grade;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import repository.xml.AbstractXMLRepository;
 
-public class NotaXMLRepo extends AbstractXMLRepository<String, Nota> {
+public class GradeXMLRepository extends AbstractXMLRepository<String, Grade> {
 
     /**
      * Class constructor
      * @param filename - numele fisierului
      */
-    public NotaXMLRepo(String filename) {
+    public GradeXMLRepository(String filename) {
         super( filename);
     }
 
     @Override
-    public Element createElementfromEntity(Document document, Nota entity) {
+    public Element createElementfromEntity(Document document, Grade entity) {
         Element e = document.createElement("nota");
 
         Element idStudent = document.createElement("idStudent");
@@ -36,8 +33,8 @@ public class NotaXMLRepo extends AbstractXMLRepository<String, Nota> {
         e.appendChild(notaProf);
 
         Element data = document.createElement("dataCurenta");
-        LocalDate d = entity.getData();
-        data.setTextContent(d.toString());
+        int d = entity.getWeekGiven();
+        data.setTextContent(Integer.toString(d));
         e.appendChild(data);
 
         return e;
@@ -50,7 +47,7 @@ public class NotaXMLRepo extends AbstractXMLRepository<String, Nota> {
      * @return nota
      */
     @Override
-    public Nota extractEntity(Element element) {
+    public Grade extractEntity(Element element) {
         String id = element.getAttribute("id");
         NodeList nods = element.getChildNodes();
 
@@ -67,13 +64,11 @@ public class NotaXMLRepo extends AbstractXMLRepository<String, Nota> {
                 .getTextContent();
 
 
-        String data =element.getElementsByTagName("dataCurenta")
+        String data = element.getElementsByTagName("dataCurenta")
                 .item(0)
                 .getTextContent();
+        int week = Integer.parseInt(data);
 
-        String[] d = data.split("-");
-        LocalDate dat = LocalDate.of(Integer.parseInt(d[0]), Integer.parseInt(d[1]), Integer.parseInt(d[2]));
-
-        return new Nota(id,studentId,temaId,Double.parseDouble(notaProf),dat);
+        return new Grade(id,studentId,temaId,Double.parseDouble(notaProf),week);
         }
 }

@@ -1,11 +1,11 @@
 package view;
 
-import domain.Nota;
-import domain.Student;
+import domain.Grade;
 import domain.LabTopic;
+import domain.Student;
 import service.Service;
 import validation.ValidationException;
-import java.time.LocalDate;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -371,15 +371,14 @@ public class UI {
         }
         System.out.print("Introduceti nota: ");
         Double nota = scanner.nextDouble();
-        System.out.print("Introduceti data predarii temei(format: an-luna-data): ");
+        System.out.print("Introduceti data predarii temei(format: nr-sapt): ");
         String data = scanner.next();
-        String[] date = data.split("-");
-        LocalDate dataPredare = LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
+        int week = Integer.parseInt(data);
         System.out.print("Introduceti feedback: ");
         scanner.nextLine();
         String feedback = scanner.nextLine();        //System.out.println(feedback);
-        Nota notaCatalog = new Nota(idNota, idStudent, nrTema, nota, dataPredare);
-        double notaFinala = service.addNota(notaCatalog, feedback);
+        Grade gradeCatalog = new Grade(idNota, idStudent, nrTema, nota, week);
+        double notaFinala = service.addGrade(gradeCatalog, feedback);
         System.out.println("Nota maxima pe care o poate primi studentul este: " + notaFinala);
     }
 
@@ -393,8 +392,8 @@ public class UI {
         System.out.print("Introduceti nr-ul temei: ");
         String nrTema = scanner.next();
         String idNota = idStudent + "#" + nrTema;
-        Nota nota = service.deleteNota(idNota);
-        if (nota == null) {
+        Grade grade = service.deleteNota(idNota);
+        if (grade == null) {
             System.out.println("Nota nu exista!");
         } else {
             System.out.println("Nota stearsa cu succes!");
@@ -411,11 +410,11 @@ public class UI {
         System.out.print("Introduceti nr-ul temei: ");
         String nrTema = scanner.next();
         String idNota = idStudent + "#" + nrTema;
-        Nota nota = service.findNota(idNota);
-        if (nota == null) {
+        Grade grade = service.findNota(idNota);
+        if (grade == null) {
             System.out.println("Nota nu exista!");
         } else {
-            System.out.println(nota);
+            System.out.println(grade);
         }
     }
 
@@ -423,7 +422,7 @@ public class UI {
      * Afiseaza toate notele
      */
     private void afisareNote() {
-        Iterable<Nota> all = service.getAllNote();
+        Iterable<Grade> all = service.getAllNote();
         all.forEach(nota ->
                 System.out.println(nota)
         );

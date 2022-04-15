@@ -1,7 +1,7 @@
 package Tests.AssignmentThree;
 
 import domain.LabTopic;
-import domain.Nota;
+import domain.Grade;
 import domain.Student;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,9 +26,9 @@ public class TestServiceAddLabTopic {
     @Mock
     private CrudRepository<String, LabTopic> labTopicCrudRepository;
     @Mock
-    private CrudRepository<String, Nota> notaCrudRepository;
+    private CrudRepository<String, Grade> notaCrudRepository;
     @Mock
-    private Validator<Nota> notaValidator;
+    private Validator<Grade> notaValidator;
     @Mock
     private Validator<Student> studentValidator;
 

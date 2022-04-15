@@ -1,8 +1,8 @@
 package Tests;
 
-import domain.Nota;
-import domain.Student;
+import domain.Grade;
 import domain.LabTopic;
+import domain.Student;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,6 @@ import validation.Validator;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -34,9 +33,9 @@ public class TestAssignmentOne {
     @Mock
     private Validator<LabTopic> temaValidator;
     @Mock
-    private CrudRepository<String, Nota> notaCrudRepository;
+    private CrudRepository<String, Grade> notaCrudRepository;
     @Mock
-    private Validator<Nota> notaValidator;
+    private Validator<Grade> notaValidator;
 
     private Service service;
 
@@ -70,13 +69,13 @@ public class TestAssignmentOne {
 
     @Test
     public void AddGrade() throws ParseException {
-        var nota = new Nota("1", "1", "1", 7.5, LocalDate.of(2022, 4, 30));
+        var nota = new Grade("1", "1", "1", 7.5, 12);
 
         Mockito.when(temaCrudRepository.findOne("1"))
                 .thenReturn(new LabTopic("1", "Assignment 1",
                         (int) simpleDateFormat.parse("20-03-2022").getTime(),
                         (int) simpleDateFormat.parse("27-03-2022").getTime()));
 
-        assertThrows(ValidationException.class, () -> service.addNota(nota, "Some feedback"));
+        assertThrows(ValidationException.class, () -> service.addGrade(nota, "Some feedback"));
     }
 }

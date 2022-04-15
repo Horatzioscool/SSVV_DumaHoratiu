@@ -2,29 +2,26 @@ package domain;
 
 import repository.HasID;
 
-import java.time.LocalDate;
-
-public class Nota implements HasID<String> {
+public class Grade implements HasID<String> {
     private String id;
     private String idStudent;
     private String idTema;
     private double nota;
-    private LocalDate data;
+    private int weekGiven;
 
     /**
      * Class Constructor
      * @param id - id-ul notei
      * @param idStudent - id-ul studentului
      * @param idTema - id-ul temei
-     * @param nota - valoarea notei
-     * @param data - data in care a fost predata tema
+     * @param gradeValue - valoarea notei
      */
-    public Nota(String id, String idStudent, String idTema, double nota, LocalDate data){
+    public Grade(String id, String idStudent, String idTema, double gradeValue, int weekGiven) {
         this.id = id;
         this.idStudent = idStudent;
         this.idTema = idTema;
-        this.nota = nota;
-        this.data = data;
+        this.nota = gradeValue;
+        this.weekGiven = weekGiven;
     }
 
     /**
@@ -56,16 +53,13 @@ public class Nota implements HasID<String> {
         this.nota = nota;
     }
 
-    /**
-     * @return data in care a fost predata nota
-     */
-    public LocalDate getData() {
-        return data;
+    public int getWeekGiven() {
+        return weekGiven;
     }
 
     @Override
     public String toString() {
-        return idStudent + "," + idTema + "," + nota + "," + data;
+        return idStudent + "," + idTema + "," + nota + "," + weekGiven;
     }
 
     /**

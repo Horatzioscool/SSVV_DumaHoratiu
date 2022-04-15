@@ -3,9 +3,9 @@ package app;
 
 import repository.xml.StudentXMLRepo;
 import repository.xml.TemaXMLRepo;
-import repository.xml.NotaXMLRepo;
+import repository.xml.GradeXMLRepository;
 import service.Service;
-import validation.NotaValidator;
+import validation.GradeValidator;
 import validation.StudentValidator;
 import validation.LabTopicValidator;
 import view.UI;
@@ -28,9 +28,9 @@ public class MainApplication {
 
         StudentXMLRepo studentXMLRepository = new StudentXMLRepo(filenameStudent);
         TemaXMLRepo temaXMLRepository = new TemaXMLRepo(filenameTema);
-        NotaValidator notaValidator = new NotaValidator(studentXMLRepository, temaXMLRepository);
-        NotaXMLRepo notaXMLRepository = new NotaXMLRepo(filenameNota);
-        Service service = new Service(studentXMLRepository, studentValidator, temaXMLRepository, labTopicValidator, notaXMLRepository, notaValidator);
+        GradeValidator gradeValidator = new GradeValidator(studentXMLRepository, temaXMLRepository);
+        GradeXMLRepository gradeXMLRepository = new GradeXMLRepository(filenameNota);
+        Service service = new Service(studentXMLRepository, studentValidator, temaXMLRepository, labTopicValidator, gradeXMLRepository, gradeValidator);
         UI ui = new UI(service);
         ui.run();
     }

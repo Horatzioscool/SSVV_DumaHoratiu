@@ -1,18 +1,16 @@
 package service;
 
 import curent.Curent;
-import domain.Nota;
-import domain.Student;
+import domain.Grade;
 import domain.LabTopic;
+import domain.Student;
 import repository.CrudRepository;
-import validation.*;
+import validation.ValidationException;
+import validation.Validator;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
-
-import static java.time.temporal.ChronoUnit.DAYS;
 
 /**
  * Clasa Service
@@ -22,8 +20,8 @@ public class Service {
     private Validator<Student> studentValidator;
     private CrudRepository<String, LabTopic> labTopicRepository;
     private Validator<LabTopic> labTopic;
-    private CrudRepository<String, Nota> notaFileRepository;
-    private Validator<Nota> notaValidator;
+    private CrudRepository<String, Grade> notaFileRepository;
+    private Validator<Grade> notaValidator;
 
     /**
      * Class Constructor
@@ -34,7 +32,7 @@ public class Service {
      * @param notaFileRepository - repository nota
      * @param notaValidator - validator nota
      */
-    public Service(CrudRepository<String, Student> studentFileRepository, Validator<Student> studentValidator, CrudRepository<String, LabTopic> labTopicRepository, Validator<LabTopic> labTopic, CrudRepository<String, Nota> notaFileRepository, Validator<Nota> notaValidator) {
+    public Service(CrudRepository<String, Student> studentFileRepository, Validator<Student> studentValidator, CrudRepository<String, LabTopic> labTopicRepository, Validator<LabTopic> labTopic, CrudRepository<String, Grade> notaFileRepository, Validator<Grade> notaValidator) {
         this.studentFileRepository = studentFileRepository;
         this.studentValidator = studentValidator;
         this.labTopicRepository = labTopicRepository;
@@ -128,36 +126,36 @@ public class Service {
 
     /**
      * Adauga o nota
-     * @param nota - nota
+     * @param grade - nota
      * @param feedback - feedback-ul notei
      * @return null daca nota a fost adaugata sau nota daca aceasta exista deja
      */
-    public double addNota(Nota nota, String feedback){
-        notaValidator.validate(nota);
-        Student student = studentFileRepository.findOne(nota.getIdStudent());
-        LabTopic labTopic = labTopicRepository.findOne(nota.getIdTema());
-        int predare = calculeazaSPredare(nota.getData());
-        if(predare != labTopic.getDeadline()){
-            if (predare- labTopic.getDeadline() == 1){
-                nota.setNota(nota.getNota()-2.5);
+    public double addGrade(Grade grade, String feedback){
+        notaValidator.validate(grade);
+        Student student = studentFileRepository.findOne(grade.getIdStudent());
+        LabTopic labTopic = labTopicRepository.findOne(grade.getIdTema());
+        int week = grade.getWeekGiven();
+        if(week != labTopic.getDeadline()){
+            if (week - labTopic.getDeadline() == 1){
+                grade.setNota(grade.getNota()-2.5);
             }
             else{
                 throw new ValidationException("Studentul nu mai poate preda aceasta tema!");
             }
         }
-        notaFileRepository.save(nota);
+        notaFileRepository.save(grade);
         String filename = "fisiere/" + student.getNume() + ".txt";
         try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filename, true))){
             bufferedWriter.write("\nTema: " + labTopic.getID());
-            bufferedWriter.write("\nNota: " + nota.getNota());
-            bufferedWriter.write("\nPredata in saptamana: " + predare);
+            bufferedWriter.write("\nNota: " + grade.getNota());
+            bufferedWriter.write("\nPredata in saptamana: " + grade.getWeekGiven());
             bufferedWriter.write("\nDeadline: " + labTopic.getDeadline());
             bufferedWriter.write("\nFeedback: " +feedback);
             bufferedWriter.newLine();
         } catch (IOException exception){
             throw new ValidationException(exception.getMessage());
         }
-        return nota.getNota();
+        return grade.getNota();
     }
 
     /**
@@ -165,7 +163,7 @@ public class Service {
      * @param id - id-ul notei
      * @return nota daca aceasta a fost stearsa sau null daca nota nu exista
      */
-    public Nota deleteNota(String id){
+    public Grade deleteNota(String id){
         if(id == null || id.equals("")) {
             throw new ValidationException("Id-ul nu poate fi null!");
         }
@@ -177,7 +175,7 @@ public class Service {
      * @param id - id-ul notei
      * @return nota sau null daca aceasta nu exista
      */
-    public Nota findNota(String id){
+    public Grade findNota(String id){
         if(id == null || id.equals("")){
             throw new ValidationException("Id-ul nu poate fi null!");
         }
@@ -187,7 +185,7 @@ public class Service {
     /**
      * @return toate notele
      */
-    public Iterable<Nota> getAllNote(){
+    public Iterable<Grade> getAllNote(){
         return notaFileRepository.findAll();
     }
 
@@ -209,17 +207,5 @@ public class Service {
         else{
             throw new ValidationException("Nu se mai poate prelungi deadline-ul!");
         }
-    }
-
-    /**
-     * Calculeaza saptamana de predare
-     * @param predare - data predarii unei teme
-     * @return saptamana in care a fost predata tema
-     */
-    private int calculeazaSPredare(LocalDate predare) {
-        LocalDate startDate = Curent.getStartDate();
-        long days = DAYS.between(startDate, predare);
-        double saptamanaPredare = Math.ceil((double)days/7);
-        return (int)saptamanaPredare;
     }
 }

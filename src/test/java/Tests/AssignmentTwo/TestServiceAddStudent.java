@@ -1,6 +1,6 @@
 package Tests.AssignmentTwo;
 
-import domain.Nota;
+import domain.Grade;
 import domain.Student;
 import domain.LabTopic;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,9 +28,9 @@ public class TestServiceAddStudent {
     @Mock
     private Validator<LabTopic> temaValidator;
     @Mock
-    private CrudRepository<String, Nota> notaCrudRepository;
+    private CrudRepository<String, Grade> notaCrudRepository;
     @Mock
-    private Validator<Nota> notaValidator;
+    private Validator<Grade> notaValidator;
 
     private Validator<Student> studentValidator = new StudentValidator();
     private Service service;
